@@ -409,15 +409,7 @@ func calculateMemPercent(stat *types.StatsJSON) float64 {
 }
 
 func calculateCPUPercent(stat *types.StatsJSON) float64 {
-	var cpuPercent = 0.0
-	// calculate the change for the cpu and system usage of the container in between readings
-	cpuDelta := float64(stat.CPUStats.CPUUsage.TotalUsage) - float64(stat.PreCPUStats.CPUUsage.TotalUsage)
-	systemDelta := float64(stat.CPUStats.SystemUsage) - float64(stat.PreCPUStats.SystemUsage)
-
-	if systemDelta > 0.0 && cpuDelta > 0.0 {
-		cpuPercent = (cpuDelta / systemDelta) * float64(len(stat.CPUStats.CPUUsage.PercpuUsage)) * 100.0
-	}
-	return cpuPercent
+	return float64(len(stat.CPUStats.CPUUsage.PercpuUsage)) * 100.0
 }
 
 func gatherBlockIOMetrics(
